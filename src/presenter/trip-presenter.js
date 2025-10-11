@@ -36,6 +36,7 @@ export default class Presenter {
   #filterType = FilterType.EVERYTHING;
   #isCreating = false;
   #isLoading = true;
+  #isErrorToLoad = false;
 
   #uiBlocker = new UiBlocker({
     lowerLimit: TimeLimit.LOWER_LIMIT,
@@ -126,6 +127,7 @@ export default class Presenter {
         break;
       case UpdateType.ERROR:
         this.#isLoading = false;
+        this.#isErrorToLoad = true;
         remove(this.#loadingComponent);
         this.#clear();
         this.#renderError();
@@ -253,7 +255,7 @@ export default class Presenter {
     const points = this.points;
     const pointCount = points.length;
 
-    if (pointCount === 0 && !this.#isCreating) {
+    if (pointCount === 0 && !this.#isCreating && !this.#isErrorToLoad) {
       this.#renderNoPoints();
       return;
     }

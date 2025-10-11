@@ -1,8 +1,8 @@
 import FilterPresenter from './presenter/filter-presenter.js';
 import NewPointBtnPresenter from './presenter/new-point-btn-presenter.js';
 import HeaderPresenter from './presenter/header-presenter.js';
-import Presenter from './presenter/presenter.js';
-import PointsModel from './model/model.js';
+import Presenter from './presenter/trip-presenter.js';
+import PointsModel from './model/trip-model.js';
 import FilterModel from './model/filter-model.js';
 import PointsApiService from './points-api-service.js';
 

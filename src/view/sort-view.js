@@ -32,8 +32,8 @@ export default class SortView extends AbstractView {
     this.#handleSortTypeChange = onSortTypeChange;
     this.#currentSortType = currentSortType;
 
-    const sortInput = this.element.querySelectorAll('.trip-sort__input');
-    sortInput.forEach((item) => {
+    const sortInputs = this.element.querySelectorAll('.trip-sort__input');
+    sortInputs.forEach((item) => {
       item.addEventListener('change', this.#sortTypeChangeHandler);
     });
   }
