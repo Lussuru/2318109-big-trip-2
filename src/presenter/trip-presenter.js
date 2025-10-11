@@ -36,6 +36,7 @@ export default class Presenter {
   #filterType = FilterType.EVERYTHING;
   #isCreating = false;
   #isLoading = true;
+  #isErrorToLoad = false;
 
   #uiBlocker = new UiBlocker({
     lowerLimit: TimeLimit.LOWER_LIMIT,
@@ -126,9 +127,10 @@ export default class Presenter {
         break;
       case UpdateType.ERROR:
         this.#isLoading = false;
+        this.#isErrorToLoad = true;
         remove(this.#loadingComponent);
         this.#clear();
-        this.#renderError();
+        this.#render();
         break;
     }
   };
@@ -218,16 +220,16 @@ export default class Presenter {
     this.#pointPresenters.forEach((presenter) => presenter.destroy());
     this.#pointPresenters.clear();
 
+    if (this.#newPointPresenter) {
+      this.#newPointPresenter.destroy();
+    }
+
     remove(this.#sortComponent);
     remove(this.#loadingComponent);
     remove(this.#failedLoadComponent);
 
     if (this.#noPointComponent) {
       remove(this.#noPointComponent);
-    }
-
-    if (this.#newPointPresenter) {
-      this.#newPointPresenter.destroy();
     }
 
     if (resetSortType) {
@@ -244,6 +246,10 @@ export default class Presenter {
 
   #render() {
     render(this.#eventListComponent, this.#contentContainer);
+    if(this.#isErrorToLoad && !this.#isCreating) {
+      this.#renderError();
+      return;
+    }
 
     if (this.#isLoading) {
       this.#renderLoading();
@@ -253,7 +259,7 @@ export default class Presenter {
     const points = this.points;
     const pointCount = points.length;
 
-    if (pointCount === 0 && !this.#isCreating) {
+    if (pointCount === 0 && !this.#isCreating && !this.#isErrorToLoad) {
       this.#renderNoPoints();
       return;
     }
