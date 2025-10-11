@@ -51,14 +51,14 @@ export default class PointsModel extends Observable {
   }
 
   getOffersByType(type) {
-    return this.#offers.find((offer) => offer.type === type).offers;
+    return this.#offers.find((offer) => offer.type === type)?.offers;
   }
 
   getCheckedOffers(point) {
     const allOffers = this.getOffersByType(point.type);
     const checkedOffersIds = [...point.offers];
 
-    return allOffers.map((offer) => ({
+    return allOffers?.map((offer) => ({
       ...offer,
       isChecked: checkedOffersIds.includes(offer.id)
     }));

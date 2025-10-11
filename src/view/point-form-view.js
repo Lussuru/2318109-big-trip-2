@@ -122,7 +122,7 @@ function createDestinationTemplate (destination) {
 
 function createOffersTemplate (offers) {
   return (`
-    ${offers.length ? `
+    ${offers?.length ? `
     <section class="event__section  event__section--offers">
     <h3 class="event__section-title  event__section-title--offers">Offers</h3>
       <div class="event__available-offers">
@@ -291,7 +291,7 @@ export default class PointFormView extends AbstractStatefulView {
 
     const selectedType = evt.target.value;
     const offers = this.#offers.find((offer) => offer.type === selectedType)
-      .offers
+      ?.offers
       .map((offer) => ({
         ...offer,
         isChecked: false

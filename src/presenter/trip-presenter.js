@@ -130,7 +130,7 @@ export default class Presenter {
         this.#isErrorToLoad = true;
         remove(this.#loadingComponent);
         this.#clear();
-        this.#renderError();
+        this.#render();
         break;
     }
   };
@@ -220,16 +220,16 @@ export default class Presenter {
     this.#pointPresenters.forEach((presenter) => presenter.destroy());
     this.#pointPresenters.clear();
 
+    if (this.#newPointPresenter) {
+      this.#newPointPresenter.destroy();
+    }
+
     remove(this.#sortComponent);
     remove(this.#loadingComponent);
     remove(this.#failedLoadComponent);
 
     if (this.#noPointComponent) {
       remove(this.#noPointComponent);
-    }
-
-    if (this.#newPointPresenter) {
-      this.#newPointPresenter.destroy();
     }
 
     if (resetSortType) {
@@ -246,6 +246,10 @@ export default class Presenter {
 
   #render() {
     render(this.#eventListComponent, this.#contentContainer);
+    if(this.#isErrorToLoad && !this.#isCreating) {
+      this.#renderError();
+      return;
+    }
 
     if (this.#isLoading) {
       this.#renderLoading();
